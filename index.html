@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehiculos</title>
-  </head>
 
-  <body>
-    <script src="JS/clases.js"></script>
-    <h1>Inicar Sesion</h1>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="CSS/index.css">
+  <title>Login</title>
+</head>
 
+<body>
+
+  <div class="formulario">
     <form>
-      <label for="Telefono">Telefono:</label>
-      <input type="number" id="Telefono">
-      <br>
-
-      <label for="Password">Modelo</label>
-      <input type="text" id="Password">
-      <br>
+      <div class="text">
+        <h1>Iniciar Sesion</h1><br>
+        <div class="field">
+          <input type="text" id="Telefono" placeholder="Telefono">
+        </div><br>
+        <div class="field">
+          <input type="password" id="Password" placeholder="Password">
+        </div><br>
+      </div>
     </form>
-    <button id="IniSesion">Ingresar</button>
+    <div class="field">
+      <button id="IniSesion">Ingresar</button>
+    </div>
+  </div>
+  </div>
+  <script src="JS/clases.js"></script>
+  <script src="JS/index.js"></script>
+</body>
 
-    <script src="JS/app.js"></script>
-  </body>
 </html>

@@ -1,4 +1,94 @@
+
+*{
+  margin:0;
+  padding:0;
+  font-family:sans-serif;
+}
+
 body{
-  padding: 0;
-  margin: 0;
+  display:flex;
+  height: 100vh;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color:black;
+}
+
+.formulario{
+  position:relative;
+  height:auto;
+  padding:40px 35px 60px;
+  box-sizing:border-box;
+  border:1px solid white;
+  box-shadow:0 0 1px #272727;
+  background-color: #222222;
+  animation: glow 1s ease-out infinite alternate;
+  border-radius: 10px;
+
+}
+
+.text{
+  font-size:50px;
+}
+form{
+  margin-top:40px;
+}
+form.field{
+  margin-top: 40px;
+  display: flex;
+}
+
+h1{
+  color:white;
+}
+
+.field input, .field button {
+  height: 60px;
+  width: 100%;
+  outline: none;
+  font-size:40px;
+  border-radius: 10px;
+  animation: glow 1s ease-out infinite alternate;
+}
+
+button{
+  margin-top:60px;
+  border-radius: 10px;
+  font-weight:600;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+button:hover{
+  color:blue;
+  background-color:white;
+  border: 2px solid blue;
+  box-shadow:0 0 10px rgba(0,0,255,.3),
+             0 0 20px rgba(0,0,255,.2),
+             0 0 40px rgba(0,0,255,.1);
+}
+
+button:active {
+  box-shadow: 0 6px #666;
+  transform: translateY(3px);
+}
+
+input:focus{
+  color:blue;
+  box-shadow:0 0 10px rgba(0,0,255,.3),
+             0 0 20px rgba(0,0,255,.2),
+             0 0 40px rgba(0,0,255,.1);
+}
+
+@keyframes glow{
+  0%{
+    border-color:#333539;
+    box-shadow:0 0 10px rgba(0,0,255,.2),
+               inset 0 0 10px rgba(0,0,0,1);
+  }
+  100%{
+    border-color:blue;
+    box-shadow: 0 0 40px rgba(0,0,255,.2),
+                inset 0 0 10px rgba(0,0,255,.1)
+  }
 }

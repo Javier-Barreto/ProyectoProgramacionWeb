@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista propietario</title>
+  </head>
+
+  <body onload="loadinfo()">
+    
+    <form>
+      <h2>Ingresar a un nuevo usario</h2>
+      <input type="text" id="NombreNew" placeholder="Nombre">
+      <br>
+
+      <input type="text" id="TelefonoNew" placeholder="Telefono">
+      <br>
+
+      <input type="text" id="CorreoNew" placeholder="example@example.com">
+      <br>
+
+      <input type="password" id="PasswordNew" placeholder="Password">  
+      <br>
+    </form>
+    <button id="NewUserBtn">Ingresar</button>
+
+
+
+    <form>
+      <h2>Crear un nuevo cobro</h2>
+      <input type="text" id="CCantidad" placeholder="1000">
+      <br>
+
+      <div id="CobroAUsuarios">
+      </div>
+      <br>
+    </form>
+    <button id="CrearCobroBtn">Crear</button>
+
+
+
+
+    <form>
+      <h2>Ingresar pago usuario</h2>
+      <input type="text" id="PCantidad" placeholder="2500">
+      <br>
+    
+      <label>Seleccione el usuario al que se le aplicará el pago:</label>
+      <br>
+
+      <select id="ListUsers">
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+      </select>
+      <br>
+    </form>
+    <button id="NewPayBtn">Ingresar Pago</button>
+
+
+    <form>
+      <h2>Obtener Monto en total y monto en deudas</h2>
+      <div id="Montoinfo">
+        
+      </div>
+      <br>
+    </form>
+
+    </div>
+
+    <form>
+      <h2></h2>
+      <div></div>
+      <br>
+    </form>
+    <a href="index.html">Cerrar Sesion</a>
+    <script src="JS/clases.js"></script>
+    <script src="JS/propietario.js"></script>
+  </body>
+</html>

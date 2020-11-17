@@ -1,10 +1,10 @@
 class user{
-  constructor(nombre, telefono, correo, password)
+  constructor(name,tel,mail,pwd)
   {
-    this.nombre = nombre;
-    this.telefono = telefono;
-    this.correo = correo;
-    this.password = password;
+    this.Nombre = name;
+    this.Telefono = tel;
+    this.Correo = mail;
+    this.Password = pwd;
   }
 }
 
@@ -14,14 +14,14 @@ class charge{
   {
     this.users = users;
     this.amount = amount;
-    this.paymentstate = this.state;
   }
 }
 
 class payment{
-  constructor(user, amount)
+  constructor(user, amount, date)
   {
     this.user = user;
     this.amount = amount;
+    this.date = date;
   }
 }

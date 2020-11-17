@@ -6,6 +6,7 @@ let C1= new charge("Javier Anastaiso Barreto Martinez",2500);
 if(!bd || bd==undefined)
 {
   bd={
+    login:"",
     users:{
       prop:[{Nombre: "Oskar Pablo Rolon Gonzalez",Telefono: 3123010101,Correo:"orolon@ucol.mx",Password:"ADMIN"}],
       user:[{Nombre: "Javier Anastaiso Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
@@ -26,12 +27,16 @@ if(!bd || bd==undefined)
 document.getElementById("IniSesion").addEventListener("click",()=>{
   if(login())
   {
+    bd.login=document.getElementById("Telefono").value;
+    localStorage.setItem("PPBD",JSON.stringify(bd));
     location.replace("propietario.html");
   }
   else
   {
     if(login2())
     {
+      bd.login=document.getElementById("Telefono").value;
+      localStorage.setItem("PPBD",JSON.stringify(bd));
       location.replace("usuario.html");
     }
     else
@@ -70,3 +75,11 @@ function login2(){
   });
   return valid2;
 }
+
+
+document.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+     event.preventDefault();
+     document.getElementById("IniSesion").click();
+  }
+});
