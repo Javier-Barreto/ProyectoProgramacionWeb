@@ -12,7 +12,7 @@ class charge{
   state=false;//Permite controlar sí el pago ya se termino de pagar completamente(true), en caso de que no, no se modificaria el valor de "no pagado"(falase)
   constructor(users,amount)
   {
-    this.users = users;
+    this.Nombre = users;
     this.amount = amount;
   }
 }
@@ -20,7 +20,7 @@ class charge{
 class pay{
   constructor(user, amount, date)
   {
-    this.user = user;
+    this.Nombre = user;
     this.amount = amount;
     this.date = date;
   }

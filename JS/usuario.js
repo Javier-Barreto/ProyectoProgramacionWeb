@@ -38,10 +38,18 @@ function validpageloadlogin(info){
     {
       valid1=true;
     }
-    else
-    {
-      valid1=false;
-    }
   });
   return valid1;
 }
+
+
+
+
+
+//<----------------------------------------------------------------------->//
+//<--------------------------CERRAR SESION-------------------------------->//
+//<----------------------------------------------------------------------->//
+document.getElementById("CloseSesion").addEventListener("click",()=>{
+  bd.login = "";
+  localStorage.setItem("PPBD",JSON.stringify(bd));
+});

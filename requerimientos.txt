@@ -7,8 +7,8 @@ serían aquellos que quieran ingresar a revisralos pagos realizados a su propia 
 contraseña. 
 (DONE)El propietario podrá registrar una cantidad a cobrar y decidir a qué usuario(s) (o si a todos) se aplicará el cargo.
 (DONE)El propietario podrá registrar un pago de un usuario por cualquier cantidad y se irá aplicando a el total de la deuda.
-El propietario podrá consultar el monto recibido en total y el monto de deuda pendiente.
-El propietario podrá realizar consultas por período de tiempo y por usuarios
+(DONE)El propietario podrá consultar el monto recibido en total y el monto de deuda pendiente.
+El propietario podrá realizar consultas por una fecha y por usuarios
 
 
 El otro usuario que llamaremos deudor haría lo siguiente:

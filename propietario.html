@@ -7,6 +7,13 @@
   </head>
 
   <body onload="loadinfo()">
+    <header>
+      <a href="index.html" id="CloseSesion">Cerrar Sesion</a>
+    </header>
+
+
+
+
     
     <form>
       <h2>Ingresar a un nuevo usario</h2>
@@ -28,7 +35,7 @@
 
     <form>
       <h2>Crear un nuevo cobro</h2>
-      <input type="text" id="CCantidad" placeholder="1000">
+      <input type="number" id="CCantidad" placeholder="1000">
       <br>
 
       <div id="CobroAUsuarios">
@@ -63,14 +70,30 @@
       <br>
     </form>
 
-    </div>
+
+
+
 
     <form>
-      <h2></h2>
-      <div></div>
+      <h2>Obtener pagos por fecha y usuario</h2>
+
+      <label>Seleccionar fecha:</label>
       <br>
+      <input type="date" id="ObtPagosDate">
+      <br>
+      <br>
+      <label>Decidir si quieres ver el de un usuario o todos los usuarios:</label>
+      <br>
+
+      <select id="ListUsers2">
+      </select>
+      <br>
+      <div id="Montoinfo">
+        
+      </div>
     </form>
-    <a href="index.html" id="CloseSesion">Cerrar Sesion</a>
+    <button id="BtnConsultar">Consultar</button><br>
+
     <script src="JS/clases.js"></script>
     <script src="JS/propietario.js"></script>
   </body>

@@ -42,10 +42,6 @@ function validpageloadlogin(info){
     {
       valid1=true;
     }
-    else
-    {
-      valid1=false;
-    }
   });
   return valid1;
 }
@@ -85,7 +81,8 @@ function loadinfo(){
 
   //-------------Para Un drop list-------------//
   document.getElementById("ListUsers").innerHTML=`
-    <option value="Nobody">-------------------------------------------------</option>`;
+    <option value="Nobody">-------------------------------------------------</option>
+  `;
 
   usuarios.users.user.forEach(element=>{
     document.getElementById("ListUsers").innerHTML+=`
@@ -94,6 +91,10 @@ function loadinfo(){
 
   MontoTotal();
   document.getElementById("PayInfo").innerHTML=``;
+
+  document.getElementById("ListUsers2").innerHTML=`
+    <option value="ALL">TODOS</option>
+  `;
 }
 
 function contarUsuarios(){
@@ -101,8 +102,6 @@ function contarUsuarios(){
   let usuarios = JSON.parse(localStorage.getItem("PPBD"));
   let x =usuarios.users.user.length;
   return x;
-
-
 }
 
 
@@ -291,7 +290,7 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
   document.getElementById("NewPayBtn").addEventListener("click",()=>{
     let PCantidad = document.getElementById("PCantidad").value;
     let date = new Date();
-    let datepayment = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
+    let datepayment = date.getFullYear()+"-"+(1+date.getMonth())+"-"+date.getDate();
     if(document.getElementById("PCantidad").value=="")
     {
       alert("Ingrese la cantidad del pago");
@@ -301,20 +300,16 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
     {
       let NewPay = new pay(usuarioseleccionado1,PCantidad,datepayment);
       bd.payments.push(NewPay);
-      
-      for(i=0;i<bd.charges.length;i++)
-      {
-        if(bd.charges[i].amount>0)
-        {
-          bd.charges[i].amount = parseInt(bd.charges[i].amount) - NewPay.amount;
-          break;
-        }
-      }
       localStorage.setItem("PPBD",JSON.stringify(bd));
       document.getElementById("NewPayBtn").disabled=true;
+      alert("Pago realizado correctamente");
     }
     loadinfo();
   });
+
+
+
+
 
 //<--------------------------------------------------------------------->//
 //<--------------------Monto recibido y en deudas----------------------->//
@@ -332,10 +327,12 @@ function MontoTotal(){
   });
 
   document.getElementById("Montoinfo").innerHTML = `
+  <div>
     <p>Total en deudas: $${montodeuda}</p>
     <p>Total pagado: $${montopagado}</p>
     <p>----------------------------------</p>
     <p>Total:$${montopagado+montodeuda}</p>
+  </div>
   `;
 }
 
@@ -346,3 +343,23 @@ function MontoTotal(){
 //<------------------------------------------------------------------------------>//
 //<--------------------Consultar pagos por fecha o usuario----------------------->//
 //<------------------------------------------------------------------------------>//
+document.getElementById("BtnConsultar").addEventListener("click",()=>
+{
+  if(document.getElementById("ListUsers2").value=="ALL")
+  {
+    if(document.getElementById("ObtPagosDate").value=="")
+    {
+      alert("Ingrese una fecha");
+    }
+    else
+    {
+      console.log(document.getElementById("ObtPagosDate").value);
+      bd.payments.forEach(element=>{
+        if(element.date==document.getElementById("ObtPagosDate").value)
+        {
+          console.log("Hola");
+        }
+      });
+    }
+  }
+});

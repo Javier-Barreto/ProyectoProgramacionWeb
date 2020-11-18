@@ -9,7 +9,7 @@ if(!bd || bd==undefined)
     login:"",
     users:{
       prop:[{Nombre: "Oskar Pablo Rolon Gonzalez",Telefono: 3123010101,Correo:"orolon@ucol.mx",Password:"ADMIN"}],
-      user:[{Nombre: "Javier Anastaiso Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
+      user:[{Nombre: "Javier Anastaiso Barreto Martinez",Telefono: "3121676990", Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
     },
     charges:[],
     payments:[]
@@ -46,9 +46,9 @@ document.getElementById("IniSesion").addEventListener("click",()=>{
   }
 });
 
-let valid1=false;
-let valid2=false;
+
 function login(){
+  let valid1=false;
   bd.users.prop.forEach(element => {
     if(element.Telefono==document.getElementById("Telefono").value&&element.Password==document.getElementById("Password").value)
     {
@@ -63,14 +63,12 @@ function login(){
 }
 
 function login2(){
+  let valid2=false;
   bd.users.user.forEach(element => {
     if(element.Telefono==document.getElementById("Telefono").value&&element.Password==document.getElementById("Password").value)
     {
+      console.log(element);
       valid2 = true;
-    }
-    else
-    {
-      valid2 = false;
     }
   });
   return valid2;
