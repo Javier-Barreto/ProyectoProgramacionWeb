@@ -32,6 +32,7 @@
       <br>
 
       <div id="CobroAUsuarios">
+        
       </div>
       <br>
     </form>
@@ -42,21 +43,16 @@
 
     <form>
       <h2>Ingresar pago usuario</h2>
-      <input type="text" id="PCantidad" placeholder="2500">
-      <br>
-    
-      <label>Seleccione el usuario al que se le aplicará el pago:</label>
-      <br>
-
       <select id="ListUsers">
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="mercedes">Mercedes</option>
-        <option value="audi">Audi</option>
       </select>
+
+      <div id="PayInfo">
+        
+      </div>
+      
       <br>
     </form>
-    <button id="NewPayBtn">Ingresar Pago</button>
+    <button id="NewPayBtn" disabled>Ingresar Pago</button>
 
 
     <form>
@@ -74,7 +70,7 @@
       <div></div>
       <br>
     </form>
-    <a href="index.html">Cerrar Sesion</a>
+    <a href="index.html" id="CloseSesion">Cerrar Sesion</a>
     <script src="JS/clases.js"></script>
     <script src="JS/propietario.js"></script>
   </body>

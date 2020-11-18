@@ -62,6 +62,7 @@ function loadinfo(){
   //---------------Para COBRO DE USUARIOS------------------//
   document.getElementById("CobroAUsuarios").innerHTML="";
   let i=0;
+  cont=0;
 
   if(contarUsuarios()>1)//Si es mas de un usuario, que permita añadir la opcion de seleccionar a todos
   {
@@ -82,7 +83,6 @@ function loadinfo(){
 
 
 
-
   //-------------Para Un drop list-------------//
   document.getElementById("ListUsers").innerHTML=`
     <option value="Nobody">-------------------------------------------------</option>`;
@@ -93,6 +93,7 @@ function loadinfo(){
   });
 
   MontoTotal();
+  document.getElementById("PayInfo").innerHTML=``;
 }
 
 function contarUsuarios(){
@@ -102,11 +103,16 @@ function contarUsuarios(){
   return x;
 
 
-
-
-
-  //-------------Para monto Total-------------//
 }
+
+
+//<----------------------------------------------------------------------->//
+//<--------------------------CERRAR SESION-------------------------------->//
+//<----------------------------------------------------------------------->//
+document.getElementById("CloseSesion").addEventListener("click",()=>{
+  bd.login = "";
+  localStorage.setItem("PPBD",JSON.stringify(bd));
+});
 
 
 
@@ -150,6 +156,19 @@ document.getElementById("NewUserBtn").addEventListener("click",()=>{
 //<----------------------------------------------------------------------->//
 //<------------------------Generar cobro a usuarios----------------------->//
 //<----------------------------------------------------------------------->//
+let onevaliduser=false;
+function onevalid()
+{
+  for(i=0;i<cont;i++)
+  {
+    if(document.getElementById("USER"+i).checked)
+    {
+      onevaliduser=true;
+      break;
+    }
+  }
+}
+
 
 function VALIDALL(){
   document.getElementById("CobroAUsuarios").innerHTML="";
@@ -161,62 +180,68 @@ function VALIDALL(){
 
 document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
   let cantidad=document.getElementById("CCantidad").value;
+  let CALLV=false;
 
-  //Validacion para seleccionar almenos a un usuario y este devuelva un estado
-  let onevalid=false;
-  for(i=0;i<cont;i++)
+  if(document.getElementById("CALL")==undefined)
   {
-    if(document.getElementById("USER"+i).checked)
-    {
-      onevalid=true;
-      break;
-    }
+    
+  }
+  else
+  {
+    CALLV=true;
   }
 
-  //Validacion de campos vacios
-  if(cantidad=="")
+
+  //Validacion y carga de cobros
+  if(cantidad==""||cantidad==0||cantidad=="0")
   {
     alert("Ingrese una cantidad");
   }
   else
   {
-    if(document.getElementById("CALL").checked)
-    {
-      bd.users.user.forEach(element=>{
-        let x = new charge(element.Nombre,cantidad);
-        bd.charges.push(x);
-      });
-
-      localStorage.setItem("PPBD",JSON.stringify(bd));
-
-      alert("Se han cargado los nuevos cobros a todos los usuarios");
-      //Limpiar campos:
-      document.getElementById("CCantidad").value="";
-      loadinfo();
-    }
-    else
-    {   
-      if(onevalid==false)
+      if(CALLV==true)
       {
-        alert("Seleccione almenos un usuario");
+        if(document.getElementById("CALL").checked)
+        {
+          bd.users.user.forEach(element=>{
+            let x = new charge(element.Nombre,cantidad);
+            bd.charges.push(x);
+          });
+        
+          localStorage.setItem("PPBD",JSON.stringify(bd));
+        
+          alert("Se han cargado los nuevos cobros a todos los usuarios");
+          //Limpiar campos:
+          document.getElementById("CCantidad").value="";
+          loadinfo();
+        }
       }
       else
       {
-        for(i=0;i<cont;i++)
+        onevalid();
+        if(onevaliduser==true)
         {
-          if(document.getElementById("USER"+i).checked)
+          for(i=0;i<cont;i++)
           {
-            let z = new charge(document.getElementById("USER"+i).value,cantidad);
-            bd.charges.push(z);
+            if(document.getElementById("USER"+i).checked)
+            {
+              let z = new charge(document.getElementById("USER"+i).value,cantidad);
+              bd.charges.push(z);
+            }
           }
+          alert("Se han cargado los nuevos cobros a todos los usuarios seleccionados");
+          localStorage.setItem("PPBD",JSON.stringify(bd));
+          document.getElementById("CCantidad").value="";
+          loadinfo();
         }
-        alert("Se han cargado los nuevos cobros a todos los usuarios seleccionados");
-        localStorage.setItem("PPBD",JSON.stringify(bd));
-        document.getElementById("CCantidad").value="";
-        loadinfo();
+        else
+        {
+          alert("Seleccione al menos a un ususario")
+        }
       }
-    }
   }
+  document.getElementById("CCantidad").value="";
+  onevaliduser=false;
 });
 
 
@@ -226,30 +251,70 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
 //<--------------------------------------------------------------------->//
 //<----------------------Registrar Pago a Usuario----------------------->//
 //<--------------------------------------------------------------------->//
+  loadinfo();//Load info carga la información de la lista para seleccionar usuarios
 
-document.getElementById("NewPayBtn").addEventListener("click",()=>{
-  let PCantidad = document.getElementById("PCantidad").value;
-  let date = new Date();
-  let datepayment = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
-  console.log(datepayment);
-  if(document.getElementById("PCantidad").value=="")
-  {
-    alert("Ingrese la cantidad del pago")
-  }
-  else
-  {
+  let usuarioseleccionado1;
+  let sumatotaldeuda=0;
+
+
+  document.getElementById("ListUsers").addEventListener("change",()=>{
     if(document.getElementById("ListUsers").value=="Nobody")
     {
-      alert("Selecciona un usuario")
+      document.getElementById("PayInfo").innerHTML=``;
     }
     else
-    {//DUDA2
-      let NewPay = new payment(document.getElementById("ListUsers").value,PCantidad,datepayment)
-      console.log(NewPay);
-      loadinfo();
+    {
+      document.getElementById("NewPayBtn").disabled=false;
+      let i=0;
+      let usuarioseleccionado2 = document.getElementById("ListUsers").value;
+      
+      bd.users.user.forEach(element=>{
+        if(usuarioseleccionado2==element.Nombre)
+        {
+          sumatotaldeuda+=parseInt(bd.charges[i].amount);
+        }
+        i++;
+      });
+
+      document.getElementById("PayInfo").innerHTML=`
+      <p>Usuario: ${usuarioseleccionado2}</p>
+      <p>Deuda total: ${sumatotaldeuda}</p>
+      <label>Cantidad de dinero pagado por el usuario:</label>
+      <input type="text" id="PCantidad" placeholder="2500">
+      <br>
+      `;
+      usuarioseleccionado1=usuarioseleccionado2;
     }
-  }
-});
+    sumatotaldeuda=0;
+  });
+
+  document.getElementById("NewPayBtn").addEventListener("click",()=>{
+    let PCantidad = document.getElementById("PCantidad").value;
+    let date = new Date();
+    let datepayment = date.getDate()+"/"+date.getMonth()+"/"+date.getFullYear();
+    if(document.getElementById("PCantidad").value=="")
+    {
+      alert("Ingrese la cantidad del pago");
+      document.getElementById("NewPayBtn").disabled=true;
+    }
+    else
+    {
+      let NewPay = new pay(usuarioseleccionado1,PCantidad,datepayment);
+      bd.payments.push(NewPay);
+      
+      for(i=0;i<bd.charges.length;i++)
+      {
+        if(bd.charges[i].amount>0)
+        {
+          bd.charges[i].amount = parseInt(bd.charges[i].amount) - NewPay.amount;
+          break;
+        }
+      }
+      localStorage.setItem("PPBD",JSON.stringify(bd));
+      document.getElementById("NewPayBtn").disabled=true;
+    }
+    loadinfo();
+  });
 
 //<--------------------------------------------------------------------->//
 //<--------------------Monto recibido y en deudas----------------------->//
@@ -258,23 +323,20 @@ function MontoTotal(){
   let montodeuda=0;
   let montopagado=0;
 
-  let usuarios=JSON.parse(localStorage.getItem("PPBD"));
-  usuarios.charges.forEach(element =>{
+  bd.charges.forEach(element =>{
     montodeuda += parseFloat(element.amount);
   });
 
-  usuarios.payments.forEach(element =>{
+  bd.payments.forEach(element =>{
     montopagado += parseFloat(element.amount);
   });
 
   document.getElementById("Montoinfo").innerHTML = `
-  <div>
     <p>Total en deudas: $${montodeuda}</p>
     <p>Total pagado: $${montopagado}</p>
     <p>----------------------------------</p>
     <p>Total:$${montopagado+montodeuda}</p>
-  </div>
-  `
+  `;
 }
 
 

@@ -17,7 +17,7 @@ class charge{
   }
 }
 
-class payment{
+class pay{
   constructor(user, amount, date)
   {
     this.user = user;
