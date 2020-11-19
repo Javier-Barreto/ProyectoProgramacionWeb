@@ -126,6 +126,7 @@ document.getElementById("CloseSesion").addEventListener("click",()=>{
 //<----------------------Ingresar a un nuevo usuario---------------------->//
 //<----------------------------------------------------------------------->//
 document.getElementById("NewUserBtn").addEventListener("click",()=>{
+  let validTel=false;
   let NameNew=document.getElementById("NombreNew").value;
   let TelNew=document.getElementById("TelefonoNew").value;
   let MailNew=document.getElementById("CorreoNew").value;
@@ -137,13 +138,27 @@ document.getElementById("NewUserBtn").addEventListener("click",()=>{
   }
   else
   {
-    //let NewUser2 = {Nombre: NameNew, Telefono: TelNew, Correo: MailNew, Password: PwdNew};
-    let NewUser = new user(NameNew,TelNew,MailNew,PwdNew);
-    bd.users.user.push(NewUser);
-    localStorage.setItem("PPBD",JSON.stringify(bd));
-    loadinfo();
+    bd.users.user.forEach(element=>{
+      if(element.Telefono==TelNew)
+      {
+        validTel=true;
+      }
+    });
 
-    alert("Nuevo usuario ingresado");
+    if(validTel==true)
+    {
+      alert("Ya existe el número de telefono que usted ingreso");
+    }
+    else
+    {
+      //let NewUser2 = {Nombre: NameNew, Telefono: TelNew, Correo: MailNew, Password: PwdNew};
+      let NewUser = new user(NameNew,TelNew,MailNew,PwdNew);
+      bd.users.user.push(NewUser);
+      localStorage.setItem("PPBD",JSON.stringify(bd));
+      loadinfo();
+
+      alert("Nuevo usuario ingresado");
+    }
 
     //Limpiar los inputs
     document.getElementById("NombreNew").value="";
@@ -203,12 +218,13 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
   }
   else
   {
+    console.log("Entré"+CALLV)
       if(CALLV==true)
       {
         if(document.getElementById("CALL").checked)
         {
           bd.users.user.forEach(element=>{
-            let x = new charge(element.Nombre,cantidad);
+            let x = new charge(element.Nombre,parseInt(cantidad));
             bd.charges.push(x);
           });
         
@@ -219,6 +235,30 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
           document.getElementById("CCantidad").value="";
           loadinfo();
         }
+        else
+        {
+          onevalid();
+          if(onevaliduser==true)
+          {
+            for(i=0;i<cont;i++)
+            {
+              if(document.getElementById("USER"+i).checked)
+              {
+                let z = new charge(document.getElementById("USER"+i).value,parseInt(cantidad));
+                bd.charges.push(z);
+              }
+            }
+            alert("Se han cargado los nuevos cobros a todos los usuarios seleccionados");
+            localStorage.setItem("PPBD",JSON.stringify(bd));
+            document.getElementById("CCantidad").value="";
+            loadinfo();
+          }
+          else
+          {
+            alert("Seleccione al menos a un ususario")
+          }
+        }
+        
       }
       else
       {
@@ -229,7 +269,7 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
           {
             if(document.getElementById("USER"+i).checked)
             {
-              let z = new charge(document.getElementById("USER"+i).value,cantidad);
+              let z = new charge(document.getElementById("USER"+i).value,parseInt(cantidad));
               bd.charges.push(z);
             }
           }
@@ -273,18 +313,20 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
       let usuarioseleccionado2 = document.getElementById("ListUsers").value;
       
       bd.users.user.forEach(element=>{
-        if(usuarioseleccionado2==element.Nombre)
+        for(i=0;i<bd.charges.length;i++)
         {
-          sumatotaldeuda+=parseInt(bd.charges[i].amount);
+          if(usuarioseleccionado2==element.Nombre)
+          {
+            sumatotaldeuda+=parseInt(bd.charges[i].amount);
+          }
         }
-        i++;
       });
 
       document.getElementById("PayInfo").innerHTML=`
       <p>Usuario: ${usuarioseleccionado2}</p>
       <p>Deuda total: ${sumatotaldeuda}</p>
       <label>Cantidad de dinero pagado por el usuario:</label>
-      <input type="number" id="PCantidad" placeholder="2500">
+      <input type="number" id="PCantidad" placeholder="0">
       <br>
       `;
       usuarioseleccionado1=usuarioseleccionado2;
@@ -323,22 +365,23 @@ function MontoTotal(){
   let montodeuda=0;
   let montopagado=0;
 
-  bd.charges.forEach(element =>{
-    montodeuda += parseFloat(element.amount);
+  bd.users.user.forEach(element=>{
+    bd.payments.forEach(element2=>{
+      montodeuda += parseFloat(element2.amount);
+      montopagado += parseFloat(element2.amount);
+    });
+    document.getElementById("Montoinfo").innerHTML = `
+    <div>
+      <p>Usuario: ${element.Nombre}</p>
+      <p>Total en deudas: $${montodeuda}</p>
+      <p>Total pagado: $${montopagado}</p>
+      <p>----------------------------------</p>
+      <p>Total:$${montopagado+montodeuda}</p>
+    </div>
+    `;
+    montodeuda=0;
+    montopagado=0;
   });
-
-  bd.payments.forEach(element =>{
-    montopagado += parseFloat(element.amount);
-  });
-
-  document.getElementById("Montoinfo").innerHTML = `
-  <div>
-    <p>Total en deudas: $${montodeuda}</p>
-    <p>Total pagado: $${montopagado}</p>
-    <p>----------------------------------</p>
-    <p>Total:$${montopagado+montodeuda}</p>
-  </div>
-  `;
 }
 
 
@@ -352,56 +395,73 @@ document.getElementById("BtnConsultar").addEventListener("click",()=>
 {
   if(document.getElementById("ListUsers2").value=="ALL")
   {
-    if(document.getElementById("ObtPagosDate").value=="")
+    if(bd.payments.length==0)
     {
-      alert("Ingrese una fecha");
+      document.getElementById("FechaPagoInfo").innerHTML=`
+      <div class="DivPagoCard">
+        <p>NO HAY PAGOS REGISTRADOS</p>
+      </div>`;
     }
     else
     {
-      document.getElementById("FechaPagoInfo").innerHTML="";
-      console.log(document.getElementById("ObtPagosDate").value);
-      bd.payments.forEach(element=>{
-        if(element.date==document.getElementById("ObtPagosDate").value)
-        {
-          console.log("Hola");
-          document.getElementById("FechaPagoInfo").innerHTML+=`
-          <div class="DivPagoCard">
-            <p>------------------------------</p>
-            <p>Fecha: ${element.date}</p>
-            <p>Usuario: ${element.Nombre}</p>
-            <p>------------------------------</p>
-            <p>Cantidad pagada: $${element.amount};
-          </div>
-          `;
-        }
-      });
+      if(document.getElementById("ObtPagosDate").value=="")
+      {
+        alert("Ingrese una fecha");
+      }
+      else
+      {
+        document.getElementById("FechaPagoInfo").innerHTML="";
+        bd.payments.forEach(element=>{
+          if(element.date==document.getElementById("ObtPagosDate").value)
+          {
+            document.getElementById("FechaPagoInfo").innerHTML+=`
+            <div class="DivPagoCard">
+              <p>------------------------------</p>
+              <p>Fecha: ${element.date}</p>
+              <p>Usuario: ${element.Nombre}</p>
+              <p>------------------------------</p>
+              <p>Cantidad pagada: $${element.amount};
+            </div>
+            `;
+          }
+        });
+      }
     }
   }
   else
   {
-    if(document.getElementById("ObtPagosDate").value=="")
+    if(bd.payments.length==0)
     {
-      alert("Ingrese una fecha");
+      document.getElementById("FechaPagoInfo").innerHTML=`
+      <div class="DivPagoCard">
+        <p>NO HAY PAGOS REGISTRADOS</p>
+      </div>`;
     }
     else
     {
-      document.getElementById("FechaPagoInfo").innerHTML="";
-      console.log(document.getElementById("ObtPagosDate").value);
-      bd.payments.forEach(element=>{
-        if(element.date==document.getElementById("ObtPagosDate").value&&element.Nombre==document.getElementById("ListUsers2").value)
-        {
-          console.log("Hola");
-          document.getElementById("FechaPagoInfo").innerHTML+=`
-          <div class="DivPagoCard">
-            <p>------------------------------</p>
-            <p>Fecha: ${element.date}</p>
-            <p>Usuario: ${element.Nombre}</p>
-            <p>------------------------------</p>
-            <p>Cantidad pagada: $${element.amount};
-          </div>
-          `;
-        }
-      });
+      if(document.getElementById("ObtPagosDate").value=="")
+      {
+        alert("Ingrese una fecha");
+      }
+      else
+      {
+        document.getElementById("FechaPagoInfo").innerHTML="";
+        bd.payments.forEach(element=>{
+          if(element.date==document.getElementById("ObtPagosDate").value&&element.Nombre==document.getElementById("ListUsers2").value)
+          {
+            console.log("Hola");
+            document.getElementById("FechaPagoInfo").innerHTML+=`
+            <div class="DivPagoCard">
+              <p>------------------------------</p>
+              <p>Fecha: ${element.date}</p>
+              <p>Usuario: ${element.Nombre}</p>
+              <p>------------------------------</p>
+              <p>Cantidad pagada: $${element.amount};
+            </div>
+            `;
+          }
+        });
+      }
     }
   }
 });
