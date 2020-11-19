@@ -300,6 +300,13 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
   let usuarioseleccionado1;
   let sumatotaldeuda=0;
 
+  let restar = 0;
+
+  function restartodo(){
+    bd.payments.forEach(element2=>{
+      restar += parseFloat(element2.amount);
+    });
+  }
 
   document.getElementById("ListUsers").addEventListener("change",()=>{
     if(document.getElementById("ListUsers").value=="Nobody")
@@ -322,9 +329,10 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
         }
       });
 
+      restartodo();
       document.getElementById("PayInfo").innerHTML=`
       <p>Usuario: ${usuarioseleccionado2}</p>
-      <p>Deuda total: ${sumatotaldeuda}</p>
+      <p>Deuda total: ${sumatotaldeuda-restar}</p>
       <label>Cantidad de dinero pagado por el usuario:</label>
       <input type="number" id="PCantidad" placeholder="0">
       <br>

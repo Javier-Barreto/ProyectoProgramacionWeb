@@ -1,4 +1,4 @@
-//<-------------------------------------------------------------->//
+ //<-------------------------------------------------------------->//
 //<-----------------CREACION DE BASE DE DATOS-------------------->//
 //<-------------------------------------------------------------->//
 let bd = JSON.parse(localStorage.getItem("PPBD"));
@@ -70,8 +70,9 @@ bd.charges.forEach(element =>{
   }
 });
 
-i=0;
+
 bd.payments.forEach(element =>{
+  i=0;
   if (element.Nombre == userNom){
     userPaym[i]=element.amount;
     i++;
@@ -91,10 +92,8 @@ function Charge (){
   {
     userChargTot+=parseInt(userCharg[j]);
   }
-  return userChargTot;
+  return userCharg;
 }
-
-
 
 document.getElementById("root").innerHTML = `
     <h1>¡Bienvenido, ${userNom}!
@@ -103,13 +102,13 @@ document.getElementById("root").innerHTML = `
       Pagos que has realizado
     </h2>
     <p>
-      $${userPaym}
+      $${Payment()}
     </p>
     <h2>
       Cobros a tu persona
     </h2>
     <p>
-        $${userCharg}
+        $${Charge()}
     </p>
     <h2>
       Deuda faltante de pago
