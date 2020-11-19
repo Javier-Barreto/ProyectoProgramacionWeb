@@ -95,6 +95,11 @@ function loadinfo(){
   document.getElementById("ListUsers2").innerHTML=`
     <option value="ALL">TODOS</option>
   `;
+
+  usuarios.users.user.forEach(element=>{
+    document.getElementById("ListUsers2").innerHTML+=`
+    <option value="${element.Nombre}">${element.Nombre}</option>`;
+  });
 }
 
 function contarUsuarios(){
@@ -279,7 +284,7 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
       <p>Usuario: ${usuarioseleccionado2}</p>
       <p>Deuda total: ${sumatotaldeuda}</p>
       <label>Cantidad de dinero pagado por el usuario:</label>
-      <input type="text" id="PCantidad" placeholder="2500">
+      <input type="number" id="PCantidad" placeholder="2500">
       <br>
       `;
       usuarioseleccionado1=usuarioseleccionado2;
@@ -353,11 +358,48 @@ document.getElementById("BtnConsultar").addEventListener("click",()=>
     }
     else
     {
+      document.getElementById("FechaPagoInfo").innerHTML="";
       console.log(document.getElementById("ObtPagosDate").value);
       bd.payments.forEach(element=>{
         if(element.date==document.getElementById("ObtPagosDate").value)
         {
           console.log("Hola");
+          document.getElementById("FechaPagoInfo").innerHTML+=`
+          <div class="DivPagoCard">
+            <p>------------------------------</p>
+            <p>Fecha: ${element.date}</p>
+            <p>Usuario: ${element.Nombre}</p>
+            <p>------------------------------</p>
+            <p>Cantidad pagada: $${element.amount};
+          </div>
+          `;
+        }
+      });
+    }
+  }
+  else
+  {
+    if(document.getElementById("ObtPagosDate").value=="")
+    {
+      alert("Ingrese una fecha");
+    }
+    else
+    {
+      document.getElementById("FechaPagoInfo").innerHTML="";
+      console.log(document.getElementById("ObtPagosDate").value);
+      bd.payments.forEach(element=>{
+        if(element.date==document.getElementById("ObtPagosDate").value&&element.Nombre==document.getElementById("ListUsers2").value)
+        {
+          console.log("Hola");
+          document.getElementById("FechaPagoInfo").innerHTML+=`
+          <div class="DivPagoCard">
+            <p>------------------------------</p>
+            <p>Fecha: ${element.date}</p>
+            <p>Usuario: ${element.Nombre}</p>
+            <p>------------------------------</p>
+            <p>Cantidad pagada: $${element.amount};
+          </div>
+          `;
         }
       });
     }
