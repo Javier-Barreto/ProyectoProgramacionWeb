@@ -362,21 +362,32 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
 //<--------------------Monto recibido y en deudas----------------------->//
 //<--------------------------------------------------------------------->//
 function MontoTotal(){
+  document.getElementById("Montoinfo").innerHTML ="";
   let montodeuda=0;
   let montopagado=0;
 
   bd.users.user.forEach(element=>{
     bd.payments.forEach(element2=>{
-      montodeuda += parseFloat(element2.amount);
-      montopagado += parseFloat(element2.amount);
+      if(element.Nombre==element2.Nombre)
+      {
+        montopagado += parseFloat(element2.amount);
+      }
     });
-    document.getElementById("Montoinfo").innerHTML = `
+
+    bd.charges.forEach(element3=>{
+      if(element.Nombre==element3.Nombre)
+      {
+        montodeuda += parseFloat(element3.amount);
+      }
+    });
+    document.getElementById("Montoinfo").innerHTML += `
     <div>
       <p>Usuario: ${element.Nombre}</p>
       <p>Total en deudas: $${montodeuda}</p>
       <p>Total pagado: $${montopagado}</p>
       <p>----------------------------------</p>
       <p>Total:$${montopagado+montodeuda}</p>
+      <br>
     </div>
     `;
     montodeuda=0;
