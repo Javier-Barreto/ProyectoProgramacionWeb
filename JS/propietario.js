@@ -315,7 +315,7 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
       bd.users.user.forEach(element=>{
         for(i=0;i<bd.charges.length;i++)
         {
-          if(usuarioseleccionado2==element.Nombre)
+          if(usuarioseleccionado2==element.Nombre&&usuarioseleccionado2==bd.charges[i].Nombre)
           {
             sumatotaldeuda+=parseInt(bd.charges[i].amount);
           }
@@ -383,10 +383,9 @@ function MontoTotal(){
     document.getElementById("Montoinfo").innerHTML += `
     <div>
       <p>Usuario: ${element.Nombre}</p>
-      <p>Total en deudas: $${montodeuda}</p>
+      <p>Total en deudas: $${montodeuda-montopagado}</p>
       <p>Total pagado: $${montopagado}</p>
       <p>----------------------------------</p>
-      <p>Total:$${montopagado+montodeuda}</p>
       <br>
     </div>
     `;
