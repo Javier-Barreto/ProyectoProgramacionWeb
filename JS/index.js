@@ -2,14 +2,14 @@
 //<-----------------CREACION DE BASE DE DATOS-------------------->//
 //<-------------------------------------------------------------->//
 let bd = JSON.parse(localStorage.getItem("PPBD"));
-let C1= new charge("Javier Anastaiso Barreto Martinez",2500);
+let C1= new charge("Javier Anastasio Barreto Martinez",2500);
 if(!bd || bd==undefined)
 {
   bd={
     login:"",
     users:{
       prop:[{Nombre: "Oskar Pablo Rolon Gonzalez",Telefono: 3123010101,Correo:"orolon@ucol.mx",Password:"ADMIN"}],
-      user:[{Nombre: "Javier Anastaiso Barreto Martinez",Telefono: "3121676990", Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
+      user:[{Nombre: "Javier Anastasio Barreto Martinez",Telefono: "3121676990", Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
     },
     charges:[],
     payments:[]

@@ -2,14 +2,14 @@
 //<-----------------CREACION DE BASE DE DATOS-------------------->//
 //<-------------------------------------------------------------->//
 let bd = JSON.parse(localStorage.getItem("PPBD"));
-let C1= new charge("Javier Anastaiso Barreto Martinez",2500);
+let C1= new charge("Javier Anastasio Barreto Martinez",2500);
 if(!bd || bd==undefined)
 {
   bd={
     login:"",
     users:{
       prop:[{Nombre: "Oskar Pablo Rolon Gonzalez",Telefono: 3123010101,Correo:"orolon@ucol.mx",Password:"ADMIN"}],
-      user:[{Nombre: "Javier Anastaiso Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
+      user:[{Nombre: "Javier Anastasio Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
     },
     charges:[],
     payments:[]
@@ -23,6 +23,8 @@ let userCharg=[];
 let userPaym=[];
 let userChargTot=0;
 let userPaymTot=0;
+let pagados=0;
+
 
 //<----------------------------------------------------------------------->//
 //<------------VALIDACION SI SE ENCUENTRA LOGEADO O NO-------------------->//
@@ -70,9 +72,9 @@ bd.charges.forEach(element =>{
   }
 });
 
+i=0;
 
 bd.payments.forEach(element =>{
-  i=0;
   if (element.Nombre == userNom){
     userPaym[i]=element.amount;
     i++;
@@ -84,15 +86,8 @@ function Payment (){
   {
     userPaymTot+=parseInt(userPaym[j]);
   }
+  pagados=userPaymTot;
   return userPaym;
-}
-
-function Charge (){
-  for (let j=0;j<userCharg.length;j++)
-  {
-    userChargTot+=parseInt(userCharg[j]);
-  }
-  return userCharg;
 }
 
 document.getElementById("root").innerHTML = `
@@ -101,13 +96,13 @@ document.getElementById("root").innerHTML = `
     <h2>
       Pagos que has realizado
     </h2>
-    <p>
+    <p >
       $${Payment()}
     </p>
     <h2>
       Cobros a tu persona
     </h2>
-    <p>
+    <p id="cobro">
         $${Charge()}
     </p>
     <h2>
@@ -117,3 +112,15 @@ document.getElementById("root").innerHTML = `
       $${userChargTot-userPaymTot}
     </p>
 `;
+
+function Charge (){
+  for (let j=0;j<userCharg.length;j++)
+  {
+    userChargTot+=parseInt(userCharg[j]);
+    if (userCharg[j]<=pagados) {
+        userCharg[j]+=" pagado";
+        pagados-=parseInt(userCharg[j]);
+    }
+  }
+  return userCharg;
+}

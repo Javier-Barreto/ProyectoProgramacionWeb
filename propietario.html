@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vista propietario</title>
+    <link rel="stylesheet" href="CSS/propietario.css">
   </head>
 
   <body onload="loadinfo()">
@@ -12,89 +13,116 @@
     </header>
 
 
-
-
-    
-    <form>
-      <h2>Ingresar a un nuevo usario</h2>
-      <input type="text" id="NombreNew" placeholder="Nombre">
-      <br>
-
-      <input type="tel" id="TelefonoNew" placeholder="Telefono">
-      <br>
-
-      <input type="email" id="CorreoNew" placeholder="example@example.com">
-      <br>
-
-      <input type="password" id="PasswordNew" placeholder="Password">  
-      <br>
-    </form>
-    <button id="NewUserBtn">Ingresar</button>
-
-
-
-    <form>
-      <h2>Crear un nuevo cobro</h2>
-      <input type="number" id="CCantidad" placeholder="1000">
-      <br>
-
-      <div id="CobroAUsuarios">
-        
+    <div class="FORSHOWOPTIONS">
+      <div class="OPTIONBAR">
+        <ul class="OPTIONS">
+          <li><a id="SHOWADDUSER">Ingresar nuevo usuario</a></li>
+          <li><a id="SHOWNEWCHARGE">Generar nuevo cobro</a></li>
+          <li><a id="SHOWNEWPAYMENT">Ingresar un pago de usuario</a></li>
+          <li><a id="SHOWTOTALINFO">Ver Monto total y en deuda</a></li>
+          <li><a id="SHOWPAYMENTS">Buscar pagos por fecha</a></li>
+        </ul>
       </div>
-      <br>
-    </form>
-    <button id="CrearCobroBtn">Crear</button>
 
-
-
-
-    <form>
-      <h2>Ingresar pago usuario</h2>
-      <select id="ListUsers">
-      </select>
-
-      <div id="PayInfo">
-        
-      </div>
+      <div class="FORMS">
+        <div id="ADDUSERS">
+          <form>
+            <h2>Ingresar a un nuevo usario</h2>
+            <input type="text" id="NombreNew" placeholder="Nombre">
+            <br>
       
-      <br>
-    </form>
-    <button id="NewPayBtn" disabled>Ingresar Pago</button>
+            <input type="tel" id="TelefonoNew" placeholder="Telefono">
+            <br>
+      
+            <input type="email" id="CorreoNew" placeholder="example@example.com">
+            <br>
+      
+            <input type="password" id="PasswordNew" placeholder="Password">  
+            <br>
+          </form>
+          <button id="NewUserBtn">Ingresar</button>
+        </div>
 
 
-    <form>
-      <h2>Obtener Monto en total y monto en deudas</h2>
-      <div id="Montoinfo">
-        
+
+
+
+        <div id="NEWCHARGE" class="FORHIDE">
+          <form>
+            <h2>Crear un nuevo cobro</h2>
+            <input type="number" id="CCantidad" placeholder="1000">
+            <br>
+      
+            <div id="CobroAUsuarios">
+              
+            </div>
+            <br>
+          </form>
+          <button id="CrearCobroBtn">Crear</button>
+        </div>
       </div>
-      <br>
-    </form>
+  
 
 
 
 
 
-    <form>
-      <h2>Obtener pagos por fecha y usuario</h2>
-
-      <label>Seleccionar fecha:</label>
-      <br>
-      <input type="date" id="ObtPagosDate">
-      <br>
-      <br>
-      <label>Decidir si quieres ver el de un usuario o todos los usuarios:</label>
-      <br>
-
-      <select id="ListUsers2">
-      </select>
-      <br>
-      <div id="FechaPagoInfo">
-        
+      <div id="NEWPAYMENT" class="FORHIDE">
+        <form>
+          <h2>Ingresar pago usuario</h2>
+          <select id="ListUsers">
+          </select>
+    
+          <div id="PayInfo">
+            
+          </div>
+          
+          <br>
+        </form>
+        <button id="NewPayBtn" disabled>Ingresar Pago</button>
       </div>
-    </form>
-    <button id="BtnConsultar">Consultar</button><br>
+  
+
+
+      <div id="TOTALINFO" class="FORHIDE">
+        <form>
+          <h2>Obtener Monto en total y monto en deudas</h2>
+          <div id="Montoinfo">
+            
+          </div>
+          <br>
+        </form>
+      </div>
+  
+  
+  
+  
+  
+      <div id="PAYMENTS" class="FORHIDE">
+        <form>
+          <h2>Obtener pagos por fecha y usuario</h2>
+    
+          <label>Seleccionar fecha:</label>
+          <br>
+          <input type="date" id="ObtPagosDate">
+          <br>
+          <br>
+          <label>Decidir si quieres ver el de un usuario o todos los usuarios:</label>
+          <br>
+    
+          <select id="ListUsers2">
+          </select>
+          <br>
+          <div id="FechaPagoInfo">
+            
+          </div>
+        </form>
+        <button id="BtnConsultar">Consultar</button><br>
+      </div>
+    </div>
 
     <script src="JS/clases.js"></script>
     <script src="JS/propietario.js"></script>
+    <script src="JS/propietario_css_actions.js"></script>
   </body>
 </html>

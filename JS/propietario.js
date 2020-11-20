@@ -2,14 +2,14 @@
 //<-----------------CREACION DE BASE DE DATOS-------------------->//
 //<-------------------------------------------------------------->//
 let bd = JSON.parse(localStorage.getItem("PPBD"));
-let C1= new charge("Javier Anastaiso Barreto Martinez",2500);
+let C1= new charge("Javier Anastasio Barreto Martinez",2500);
 if(!bd || bd==undefined)
 {
   bd={
     login:"",
     users:{
       prop:[{Nombre: "Oskar Pablo Rolon Gonzalez",Telefono: 3123010101,Correo:"orolon@ucol.mx",Password:"ADMIN"}],
-      user:[{Nombre: "Javier Anastaiso Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
+      user:[{Nombre: "Javier Anastasio Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
     },
     charges:[],
     payments:[]
@@ -298,15 +298,7 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
   loadinfo();//Load info carga la información de la lista para seleccionar usuarios
 
   let usuarioseleccionado1;
-  let sumatotaldeuda=0;
-
   let restar = 0;
-
-  function restartodo(){
-    bd.payments.forEach(element2=>{
-      restar += parseFloat(element2.amount);
-    });
-  }
 
   document.getElementById("ListUsers").addEventListener("change",()=>{
     if(document.getElementById("ListUsers").value=="Nobody")
@@ -318,28 +310,15 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
       document.getElementById("NewPayBtn").disabled=false;
       let i=0;
       let usuarioseleccionado2 = document.getElementById("ListUsers").value;
-      
-      bd.users.user.forEach(element=>{
-        for(i=0;i<bd.charges.length;i++)
-        {
-          if(usuarioseleccionado2==element.Nombre&&usuarioseleccionado2==bd.charges[i].Nombre)
-          {
-            sumatotaldeuda+=parseInt(bd.charges[i].amount);
-          }
-        }
-      });
 
-      restartodo();
       document.getElementById("PayInfo").innerHTML=`
       <p>Usuario: ${usuarioseleccionado2}</p>
-      <p>Deuda total: ${sumatotaldeuda-restar}</p>
       <label>Cantidad de dinero pagado por el usuario:</label>
       <input type="number" id="PCantidad" placeholder="0">
       <br>
       `;
       usuarioseleccionado1=usuarioseleccionado2;
     }
-    sumatotaldeuda=0;
   });
 
   document.getElementById("NewPayBtn").addEventListener("click",()=>{
@@ -353,18 +332,50 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
     }
     else
     {
-      let NewPay = new pay(usuarioseleccionado1,PCantidad,datepayment);
-      bd.payments.push(NewPay);
-      localStorage.setItem("PPBD",JSON.stringify(bd));
-      document.getElementById("NewPayBtn").disabled=true;
-      alert("Pago realizado correctamente");
+      if(VALIDPCANTIDAD()-(VALIDPCANTIDAD2()+parseFloat(PCantidad))==0||VALIDPCANTIDAD()-(VALIDPCANTIDAD2()+parseFloat(PCantidad))>0)
+      {
+        let NewPay = new pay(usuarioseleccionado1,PCantidad,datepayment);
+        bd.payments.push(NewPay);
+        localStorage.setItem("PPBD",JSON.stringify(bd));
+        document.getElementById("NewPayBtn").disabled=true;
+        alert("Pago realizado correctamente");
+      }
+      else
+      {
+        alert("Ingrese un pago que pague el total de la deuda");
+      }
     }
     loadinfo();
   });
 
 
+function VALIDPCANTIDAD()
+{
+  let montodeuda=0;
+  bd.users.user.forEach(element=>{
+    bd.charges.forEach(element3=>{
+      if(element.Nombre==element3.Nombre)
+      {
+        montodeuda += parseFloat(element3.amount);
+      }
+    });
+  });
+  return parseFloat(montodeuda);
+}
 
-
+function VALIDPCANTIDAD2()
+{
+  let montopagado=0;
+  bd.users.user.forEach(element=>{
+    bd.payments.forEach(element3=>{
+      if(element.Nombre==element3.Nombre)
+      {
+        montopagado += parseFloat(element3.amount);
+      }
+    });
+  });
+  return parseFloat(montopagado);
+}
 
 //<--------------------------------------------------------------------->//
 //<--------------------Monto recibido y en deudas----------------------->//
@@ -389,12 +400,10 @@ function MontoTotal(){
       }
     });
     document.getElementById("Montoinfo").innerHTML += `
-    <div>
+    <div class="CARDMI">
       <p>Usuario: ${element.Nombre}</p>
       <p>Total en deudas: $${montodeuda-montopagado}</p>
       <p>Total pagado: $${montopagado}</p>
-      <p>----------------------------------</p>
-      <br>
     </div>
     `;
     montodeuda=0;
@@ -433,7 +442,7 @@ document.getElementById("BtnConsultar").addEventListener("click",()=>
           if(element.date==document.getElementById("ObtPagosDate").value)
           {
             document.getElementById("FechaPagoInfo").innerHTML+=`
-            <div class="DivPagoCard">
+            <div class="CARDMI">
               <p>------------------------------</p>
               <p>Fecha: ${element.date}</p>
               <p>Usuario: ${element.Nombre}</p>
@@ -467,7 +476,6 @@ document.getElementById("BtnConsultar").addEventListener("click",()=>
         bd.payments.forEach(element=>{
           if(element.date==document.getElementById("ObtPagosDate").value&&element.Nombre==document.getElementById("ListUsers2").value)
           {
-            console.log("Hola");
             document.getElementById("FechaPagoInfo").innerHTML+=`
             <div class="DivPagoCard">
               <p>------------------------------</p>
