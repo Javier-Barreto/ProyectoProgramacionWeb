@@ -1,23 +1,34 @@
-//<-------------------------------------------------------------->//
-//<-----------------CREACION DE BASE DE DATOS-------------------->//
-//<-------------------------------------------------------------->//
-let bd = JSON.parse(localStorage.getItem("PPBD"));
-let C1= new charge("Javier Anastasio Barreto Martinez",2500);
-if(!bd || bd==undefined)
-{
-  bd={
-    login:"",
-    users:{
-      prop:[{Nombre: "Humberto Ramirez Gonzales",Telefono: 3121234567,Correo:"raghum76@ucol.mx",Password:"ADMIN"}],
-      user:[{Nombre: "Javier Anastasio Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
-    },
-    charges:[],
-    payments:[]
-  };
-  bd.charges.push(C1);
-  localStorage.setItem("PPBD",JSON.stringify(bd));
-  console.log("Base de datos creada correctamente");
-}
+ //<-------------------------------------------------------------->//
+ //<-----------------CREACION DE BASE DE DATOS-------------------->//
+ //<-------------------------------------------------------------->//
+ let bd = JSON.parse(localStorage.getItem("PPBD"));
+ let C1 = new charge("Javier Anastasio Barreto Martinez", 2500);
+ if (!bd || bd == undefined) {
+   bd = {
+     login: "",
+     users: {
+       prop: [{
+         Nombre: "Oskar Pablo Rolon Gonzalez",
+         Telefono: 3123010101,
+         Correo: "orolon@ucol.mx",
+         Password: "ADMIN"
+       }],
+       user: [{
+         Nombre: "Javier Anastasio Barreto Martinez",
+         Telefono: 3121676990,
+         Correo: "jbarreto2@ucol.mx",
+         Password: "USER1"
+       }]
+     },
+     charges: [],
+     payments: []
+   };
+   bd.charges.push(C1);
+   localStorage.setItem("PPBD", JSON.stringify(bd));
+   console.log("Base de datos creada correctamente");
+ }
+
+ 
  let userNom, i = 0;
  let userCharg = [];
  let userPaym = [];
@@ -107,11 +118,13 @@ if(!bd || bd==undefined)
      if (userCharg[j] <= pagados) {
        userCharg[j] += "$ pagado <br>";
        pagados -= parseInt(userCharg[j]);
+     }else {
+       userCharg[j] += "$<br>"
      }
    }
    return userCharg.join("");
  }
- 
+
  function Payment() {
    for (let j = 0; j < userPaym.length; j++) {
      userPaymTot += parseInt(userPaym[j]);
