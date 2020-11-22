@@ -1,58 +1,137 @@
-body{
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+*{
+  font-family: "Poppins", sans-serif;
+
+}
+body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  height:100%;
 }
 
-header{
-  right:0;
-  background-color:#222222;
+header {
+  right: 0;
+  background-color: #222222;
   padding: 1rem;
   text-align: right;
 }
 
-#CloseSesion{
+#CloseSesion {
   text-decoration: none;
   color: white;
 }
 
-
-.FORHIDE{
+.FORHIDE {
   display: none;
 }
 
-.FORSHOWOPTIONS{
-  border: 1px solid black;
+.FORSHOWOPTIONS {
+  border-radius: 10px 10px 10px 10px;
   margin: 1rem;
-  background-color: rgb(172, 172, 172);
+  background-color: white;
   justify-content: center;
 }
 
-.OPTIONBAR{
-  border: 1px solid black;
-  background-color: #222222;
+.OPTIONBAR {
+  border: 1px solid;
+  border-radius: 10px 10px 10px 10px;
+  background-color: #56baed;
   color: white;
 }
 
-.FORMS{
+.FORMS {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.OPTIONS{
+.OPTIONS {
   display: flex;
 }
-  .OPTIONS li{
-    list-style: none;
-    margin-left: 4rem;
-    cursor: pointer;
-  }
 
-.CARDMI{
+.OPTIONS li {
+  list-style: none;
+  margin-left: 4rem;
+  cursor: pointer;
+}
+
+.CARDMI {
   border: 1px solid black;
-  width: 25%;
+  width: 44%;
   background-color: white;
   margin: 1rem;
   border-radius: 5px 5px 30px 5px;
+}
+
+.ParteAbajo {
+  min-height: 500px !important;
+  min-width: 50% !important;
+  display:flex;
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:-ms-flexbox;
+  flex:1;
+  flex-direction: column;
+  height:auto;
+  width:50%;
+  background:#fff;
+  box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 0.2);
+  border-radius:30px;
+  z-index:10;
+  margin:auto;
+  margin-top:30px;
+  text-align:center;
+  justify-content:center;
+  align-items:center;
+  padding:1%;
+  font-size:30px;
+}
+
+input {
+    width: 100%;
+    min-height: 25px;
+    border: 1;
+    border-width: thin;
+    font-size: 1rem;
+    letter-spacing: .15rem;
+    margin-top: 5px;
+    color: maroon;
+    border-radius: 4px;
+}
+
+
+
+.checkboxes{
+  width: auto;
+  float: left;
+}
+
+.checkboxtext{
+  font-size: 20px;
+  float: left;
+}
+
+button{
+  margin-top:15px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  height: 38px;
+  width: 120px;
+  line-height: 38px;
+  overflow: hidden;
+  background: #56baed;
+  border-radius: 3px;
+  box-shadow: 0 15px 30px rgba(black,.1);
+  border: 0;
+  cursor: pointer;
+}
+
+#FechaPagoInfo{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#Montoinfo{
+  display: flex;
 }

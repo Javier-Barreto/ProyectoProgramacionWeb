@@ -1,4 +1,4 @@
- //<-------------------------------------------------------------->//
+//<-------------------------------------------------------------->//
 //<-----------------CREACION DE BASE DE DATOS-------------------->//
 //<-------------------------------------------------------------->//
 let bd = JSON.parse(localStorage.getItem("PPBD"));
@@ -8,7 +8,7 @@ if(!bd || bd==undefined)
   bd={
     login:"",
     users:{
-      prop:[{Nombre: "Oskar Pablo Rolon Gonzalez",Telefono: 3123010101,Correo:"orolon@ucol.mx",Password:"ADMIN"}],
+      prop:[{Nombre: "Humberto Ramirez Gonzales",Telefono: 3121234567,Correo:"raghum76@ucol.mx",Password:"ADMIN"}],
       user:[{Nombre: "Javier Anastasio Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
     },
     charges:[],
@@ -18,92 +18,80 @@ if(!bd || bd==undefined)
   localStorage.setItem("PPBD",JSON.stringify(bd));
   console.log("Base de datos creada correctamente");
 }
-let userNom,i=0;
-let userCharg=[];
-let userPaym=[];
-let userChargTot=0;
-let userPaymTot=0;
-let pagados=0;
+ let userNom, i = 0;
+ let userCharg = [];
+ let userPaym = [];
+ let userFecha = [];
+ let userChargTot = 0;
+ let userPaymTot = 0;
+ let pagados = 0;
 
 
-//<----------------------------------------------------------------------->//
-//<------------VALIDACION SI SE ENCUENTRA LOGEADO O NO-------------------->//
-//<----------------------------------------------------------------------->//
-if(validpageloadlogin(bd.login)==true)
-{
+ //<----------------------------------------------------------------------->//
+ //<------------VALIDACION SI SE ENCUENTRA LOGEADO O NO-------------------->//
+ //<----------------------------------------------------------------------->//
+ if (validpageloadlogin(bd.login) == true) {
 
-}
-else
-{
-  location.replace("index.html");
-}
+ } else {
+   location.replace("index.html");
+ }
 
-function validpageloadlogin(info){
-  let valid1=false;
-  bd.users.user.forEach(element => {
-    if(info==element.Telefono)
-    {
-      valid1=true;
-      userNom=element.Nombre;
-    }
-  });
-  return valid1;
-}
+ function validpageloadlogin(info) {
+   let valid1 = false;
+   bd.users.user.forEach(element => {
+     if (info == element.Telefono) {
+       valid1 = true;
+       userNom = element.Nombre;
+     }
+   });
+   return valid1;
+ }
 
-//<----------------------------------------------------------------------->//
-//<--------------------------CERRAR SESION-------------------------------->//
-//<----------------------------------------------------------------------->//
-document.getElementById("CloseSesion").addEventListener("click",()=>{
-  bd.login = "";
-  localStorage.setItem("PPBD",JSON.stringify(bd));
-});
+ //<----------------------------------------------------------------------->//
+ //<--------------------------CERRAR SESION-------------------------------->//
+ //<----------------------------------------------------------------------->//
+ document.getElementById("CloseSesion").addEventListener("click", () => {
+   bd.login = "";
+   localStorage.setItem("PPBD", JSON.stringify(bd));
+ });
+
+ //<----------------------------------------------------------------------->//
+ //<--------------------------COSAS HTML-------------------------------->//
+ //<----------------------------------------------------------------------->//
+
+ bd.charges.forEach(element => {
+   if (element.Nombre == userNom) {
+     userCharg[i] = element.amount;
+     i++;
+   }
+ });
+
+ i = 0;
+
+ bd.payments.forEach(element => {
+   if (element.Nombre == userNom) {
+     userPaym[i] = element.amount;
+     userFecha[i] = element.date;
+     i++;
+   }
+ });
 
 
 
-
-//<----------------------------------------------------------------------->//
-//<--------------------------COSAS HTML-------------------------------->//
-//<----------------------------------------------------------------------->//
-
-bd.charges.forEach(element =>{
-  if (element.Nombre == userNom){
-    userCharg[i]=element.amount;
-    i++;
-  }
-});
-
-i=0;
-
-bd.payments.forEach(element =>{
-  if (element.Nombre == userNom){
-    userPaym[i]=element.amount;
-    i++;
-  }
-});
-
-function Payment (){
-  for (let j=0;j<userPaym.length;j++)
-  {
-    userPaymTot+=parseInt(userPaym[j]);
-  }
-  pagados=userPaymTot;
-  return userPaym;
-}
-
-document.getElementById("root").innerHTML = `
+ document.getElementById("root").innerHTML = `
     <h1>¡Bienvenido, ${userNom}!
     </h1>
     <h2>
       Pagos que has realizado
     </h2>
-    <p >
-      $${Payment()}
+    <p id="pagos">
+      ${Payment()}
     </p>
     <h2>
       Cobros a tu persona
     </h2>
-    <p id="cobro">
-        $${Charge()}
+    <p>
+        ${Charge()}
     </p>
     <h2>
       Deuda faltante de pago
@@ -113,14 +101,22 @@ document.getElementById("root").innerHTML = `
     </p>
 `;
 
-function Charge (){
-  for (let j=0;j<userCharg.length;j++)
-  {
-    userChargTot+=parseInt(userCharg[j]);
-    if (userCharg[j]<=pagados) {
-        userCharg[j]+=" pagado";
-        pagados-=parseInt(userCharg[j]);
-    }
-  }
-  return userCharg;
-}
+ function Charge() {
+   for (let j = 0; j < userCharg.length; j++) {
+     userChargTot += parseInt(userCharg[j]);
+     if (userCharg[j] <= pagados) {
+       userCharg[j] += "$ pagado <br>";
+       pagados -= parseInt(userCharg[j]);
+     }
+   }
+   return userCharg.join("");
+ }
+ 
+ function Payment() {
+   for (let j = 0; j < userPaym.length; j++) {
+     userPaymTot += parseInt(userPaym[j]);
+     userPaym[j]+="$" + " el día " +userFecha[j] + "<br>";
+   }
+   pagados = userPaymTot;
+   return userPaym.join("");
+ }

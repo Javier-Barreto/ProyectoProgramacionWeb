@@ -8,7 +8,7 @@ if(!bd || bd==undefined)
   bd={
     login:"",
     users:{
-      prop:[{Nombre: "Oskar Pablo Rolon Gonzalez",Telefono: 3123010101,Correo:"orolon@ucol.mx",Password:"ADMIN"}],
+      prop:[{Nombre: "Humberto Ramirez Gonzales",Telefono: 3121234567,Correo:"raghum76@ucol.mx",Password:"ADMIN"}],
       user:[{Nombre: "Javier Anastasio Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
     },
     charges:[],
@@ -63,15 +63,15 @@ function loadinfo(){
   if(contarUsuarios()>1)//Si es mas de un usuario, que permita añadir la opcion de seleccionar a todos
   {
     document.getElementById("CobroAUsuarios").innerHTML=`
-    <input type="checkbox" id="CALL" value="All" onchange="VALIDALL()">
-    <label>Todos Los Usuarios</label><br>`;
+    <input type="checkbox" class="checkboxes" id="CALL" value="All" onchange="VALIDALL()">
+    <label class="checkboxtext">Todos los usuarios</label><br>`;
   }
 
   let usuarios = JSON.parse(localStorage.getItem("PPBD"));
   usuarios.users.user.forEach(element=>{
     document.getElementById("CobroAUsuarios").innerHTML+=`
-    <input type="checkbox" id="${"USER"+i}" value="${element.Nombre}">
-    <label>${element.Nombre}</label><br>`;
+    <input type="checkbox" class="checkboxes" id="${"USER"+i}" value="${element.Nombre}">
+    <label class="checkboxtext">${element.Nombre}</label><br>`;
     i++;
     cont++;
   });
@@ -193,8 +193,8 @@ function VALIDALL(){
   document.getElementById("CobroAUsuarios").innerHTML="";
 
   document.getElementById("CobroAUsuarios").innerHTML+=`
-  <input type="checkbox" id="CALL" value="All" onchange="loadinfo()" checked>
-  <label>Todos Los Usuarios</label><br>`;
+  <input type="checkbox" class="checkboxes" id="CALL" value="All" onchange="loadinfo()" checked>
+  <label class="checkboxtext">Todos Los Usuarios</label><br>`;
 }
 
 document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
@@ -218,7 +218,6 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
   }
   else
   {
-    console.log("Entré"+CALLV)
       if(CALLV==true)
       {
         if(document.getElementById("CALL").checked)
@@ -332,17 +331,24 @@ document.getElementById("CrearCobroBtn").addEventListener("click",()=>{
     }
     else
     {
-      if(VALIDPCANTIDAD()-(VALIDPCANTIDAD2()+parseFloat(PCantidad))==0||VALIDPCANTIDAD()-(VALIDPCANTIDAD2()+parseFloat(PCantidad))>0)
+      if(PCantidad==0)
       {
-        let NewPay = new pay(usuarioseleccionado1,PCantidad,datepayment);
-        bd.payments.push(NewPay);
-        localStorage.setItem("PPBD",JSON.stringify(bd));
-        document.getElementById("NewPayBtn").disabled=true;
-        alert("Pago realizado correctamente");
+        alert("No puede ingresar un pago de 0");
       }
       else
       {
-        alert("Ingrese un pago que pague el total de la deuda");
+        if(VALIDPCANTIDAD()-(VALIDPCANTIDAD2()+parseFloat(PCantidad))==0||VALIDPCANTIDAD()-(VALIDPCANTIDAD2()+parseFloat(PCantidad))>0)
+        {
+          let NewPay = new pay(usuarioseleccionado1,PCantidad,datepayment);
+          bd.payments.push(NewPay);
+          localStorage.setItem("PPBD",JSON.stringify(bd));
+          document.getElementById("NewPayBtn").disabled=true;
+          alert("Pago realizado correctamente");
+        }
+        else
+        {
+          alert("Ingrese un pago que pague el total de la deuda");
+        }
       }
     }
     loadinfo();
@@ -354,7 +360,7 @@ function VALIDPCANTIDAD()
   let montodeuda=0;
   bd.users.user.forEach(element=>{
     bd.charges.forEach(element3=>{
-      if(element.Nombre==element3.Nombre)
+      if(element.Nombre==element3.Nombre&&usuarioseleccionado1==element3.Nombre)
       {
         montodeuda += parseFloat(element3.amount);
       }
@@ -368,7 +374,7 @@ function VALIDPCANTIDAD2()
   let montopagado=0;
   bd.users.user.forEach(element=>{
     bd.payments.forEach(element3=>{
-      if(element.Nombre==element3.Nombre)
+      if(element.Nombre==element3.Nombre&&usuarioseleccionado1==element3.Nombre)
       {
         montopagado += parseFloat(element3.amount);
       }
@@ -376,6 +382,11 @@ function VALIDPCANTIDAD2()
   });
   return parseFloat(montopagado);
 }
+
+
+
+
+
 
 //<--------------------------------------------------------------------->//
 //<--------------------Monto recibido y en deudas----------------------->//
@@ -401,9 +412,9 @@ function MontoTotal(){
     });
     document.getElementById("Montoinfo").innerHTML += `
     <div class="CARDMI">
-      <p>Usuario: ${element.Nombre}</p>
-      <p>Total en deudas: $${montodeuda-montopagado}</p>
-      <p>Total pagado: $${montopagado}</p>
+      <p>Usuario: <br>${element.Nombre}</p>
+      <p>Total en deudas: <br>$${montodeuda-montopagado}</p>
+      <p>Total pagado: <br>$${montopagado}</p>
     </div>
     `;
     montodeuda=0;
@@ -443,11 +454,9 @@ document.getElementById("BtnConsultar").addEventListener("click",()=>
           {
             document.getElementById("FechaPagoInfo").innerHTML+=`
             <div class="CARDMI">
-              <p>------------------------------</p>
               <p>Fecha: ${element.date}</p>
-              <p>Usuario: ${element.Nombre}</p>
-              <p>------------------------------</p>
-              <p>Cantidad pagada: $${element.amount};
+              <p>Usuario: <br>${element.Nombre}</p>
+              <p>Cantidad pagada: <br>$${element.amount};
             </div>
             `;
           }
@@ -460,7 +469,7 @@ document.getElementById("BtnConsultar").addEventListener("click",()=>
     if(bd.payments.length==0)
     {
       document.getElementById("FechaPagoInfo").innerHTML=`
-      <div class="DivPagoCard">
+      <div class="CARDMI">
         <p>NO HAY PAGOS REGISTRADOS</p>
       </div>`;
     }
@@ -477,12 +486,10 @@ document.getElementById("BtnConsultar").addEventListener("click",()=>
           if(element.date==document.getElementById("ObtPagosDate").value&&element.Nombre==document.getElementById("ListUsers2").value)
           {
             document.getElementById("FechaPagoInfo").innerHTML+=`
-            <div class="DivPagoCard">
-              <p>------------------------------</p>
+            <div class="CARDMI">
               <p>Fecha: ${element.date}</p>
-              <p>Usuario: ${element.Nombre}</p>
-              <p>------------------------------</p>
-              <p>Cantidad pagada: $${element.amount};
+              <p>Usuario: <br>${element.Nombre}</p>
+              <p>Cantidad Pagada: <br>${element.amount}</p>
             </div>
             `;
           }

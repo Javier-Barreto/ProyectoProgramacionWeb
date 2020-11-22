@@ -8,8 +8,8 @@ if(!bd || bd==undefined)
   bd={
     login:"",
     users:{
-      prop:[{Nombre: "Oskar Pablo Rolon Gonzalez",Telefono: 3123010101,Correo:"orolon@ucol.mx",Password:"ADMIN"}],
-      user:[{Nombre: "Javier Anastasio Barreto Martinez",Telefono: "3121676990", Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
+      prop:[{Nombre: "Humberto Ramirez Gonzales",Telefono: 3121234567,Correo:"raghum76@ucol.mx",Password:"ADMIN"}],
+      user:[{Nombre: "Javier Anastasio Barreto Martinez",Telefono: 3121676990, Correo:"jbarreto2@ucol.mx",Password:"USER1"}]
     },
     charges:[],
     payments:[]
